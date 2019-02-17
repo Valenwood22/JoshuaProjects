@@ -1,0 +1,18 @@
+No.	Name		Num_In_Stock	Unit_Price
+
+1004	Circular_Saw	150		125.00
+1003	Cooking_Range	50		850.00
+1001	Dish_Washer	20		550.50
+1005	Elec._Sander	7 		99.89
+1013	Gas_Grill	6		230.99
+1006	Hammer		76		23.78
+1008	Jig_Saw		21		20.99
+1009	Lawn_Mower	30		250.89
+
+1002	Microwave	75		400.00
+1012	Paint_Brush	123		15.99
+1007	Power_Saw	8		169.67
+1010	Screwdriver	106		12.00
+1011	Sledge_Hammer	11		50.23
+1014	Wrench		34		12.99
+1015	Dust_Mask	100		3.99
