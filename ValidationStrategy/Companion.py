@@ -1,9 +1,9 @@
 
-__author__ = "Timothy Alexander, Joshua Gisi"
+__author__ = "Joshua Gisi, Timothy Alexander"
 __copyright__ = "Copyright 2019, Project Money Tree"
-__version__ = "sqlForest"
+__version__ = "1.0.0"
 __email__ = "TJEnterprises2019@gmail.com"
-__status__ = "Alpha"
+__status__ = "Demo"
 
 
 
@@ -12,9 +12,14 @@ import sqlite3
 
 
 class Companion:
+    # Global column key
     columnKey = {'PID':0, 'DATETIME':1, 'OPEN':2, 'HIGH':3, 'LOW':4, 'CLOSE':5, 'VOLUME':6, 'GENERATED':7}
 
     def __init__(self, databasePath):
+        """
+        Initiate connection to the database
+        :param databasePath: The filepath to the database
+        """
         self.databasePath = databasePath
         self.connection = sqlite3.connect(self.databasePath)
         self.cursor = self.connection.cursor()
@@ -26,6 +31,16 @@ class Companion:
 
 
     def getDataInRange(self, tableName, printReturn=False, columns=None, granularity='M1', startPID=1, endPID=2):
+        """
+
+        :param tableName:
+        :param printReturn:
+        :param columns:
+        :param granularity:
+        :param startPID:
+        :param endPID:
+        :return:
+        """
         dataset = []
         if granularity == 'M1':
             for rowPID in range(startPID, endPID+1):
