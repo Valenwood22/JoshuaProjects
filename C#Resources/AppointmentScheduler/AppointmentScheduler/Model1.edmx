@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ProjectDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AdvisorTable">
+          <Key>
+            <PropertyRef Name="AdvisorID" />
+          </Key>
+          <Property Name="AdvisorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AdvisorLastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="AdvisorFirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="AdvisorUserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="AdvisorLocation" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AppointmentTable">
+          <Key>
+            <PropertyRef Name="AppointmentID" />
+          </Key>
+          <Property Name="AppointmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AppointmentTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="AppointmentDate" Type="datetime" Nullable="false" />
+          <Property Name="AppointmentReason" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="AdvisorID" Type="int" Nullable="false" />
+          <Property Name="StudentID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MSGTable">
+          <Key>
+            <PropertyRef Name="MSGID" />
+          </Key>
+          <Property Name="MSGID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FromEmail" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TOEmail" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MSGtext" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MSGDate" Type="datetime" Nullable="false" />
+          <Property Name="MSGTime" Type="time" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StudentTable">
+          <Key>
+            <PropertyRef Name="StudentID" />
+          </Key>
+          <Property Name="StudentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentLastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="StudentFirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="StudentUserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="StudentAdvisorID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserTable">
+          <Key>
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserPassword" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserRole" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserEmail" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="ProjectDBModelStoreContainer">
+          <EntitySet Name="AdvisorTable" EntityType="Self.AdvisorTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AppointmentTable" EntityType="Self.AppointmentTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MSGTable" EntityType="Self.MSGTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentTable" EntityType="Self.StudentTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserTable" EntityType="Self.UserTable" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ProjectDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AdvisorTable">
+          <Key>
+            <PropertyRef Name="AdvisorID" />
+          </Key>
+          <Property Name="AdvisorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AdvisorLastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AdvisorFirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AdvisorUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AdvisorLocation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AppointmentTable">
+          <Key>
+            <PropertyRef Name="AppointmentID" />
+          </Key>
+          <Property Name="AppointmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AppointmentTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="AppointmentDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AppointmentReason" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AdvisorID" Type="Int32" Nullable="false" />
+          <Property Name="StudentID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MSGTable">
+          <Key>
+            <PropertyRef Name="MSGID" />
+          </Key>
+          <Property Name="MSGID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FromEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TOEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MSGtext" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MSGDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MSGTime" Type="Time" Nullable="false" Precision="7" />
+        </EntityType>
+        <EntityType Name="StudentTable">
+          <Key>
+            <PropertyRef Name="StudentID" />
+          </Key>
+          <Property Name="StudentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentLastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StudentFirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StudentUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StudentAdvisorID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserTable">
+          <Key>
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserRole" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="ProjectDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AdvisorTables" EntityType="Self.AdvisorTable" />
+          <EntitySet Name="AppointmentTables" EntityType="Self.AppointmentTable" />
+          <EntitySet Name="MSGTables" EntityType="Self.MSGTable" />
+          <EntitySet Name="StudentTables" EntityType="Self.StudentTable" />
+          <EntitySet Name="UserTables" EntityType="Self.UserTable" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ProjectDBModelStoreContainer" CdmEntityContainer="ProjectDBEntities">
+          <EntitySetMapping Name="AdvisorTables">
+            <EntityTypeMapping TypeName="ProjectDBModel.AdvisorTable">
+              <MappingFragment StoreEntitySet="AdvisorTable">
+                <ScalarProperty Name="AdvisorID" ColumnName="AdvisorID" />
+                <ScalarProperty Name="AdvisorLastName" ColumnName="AdvisorLastName" />
+                <ScalarProperty Name="AdvisorFirstName" ColumnName="AdvisorFirstName" />
+                <ScalarProperty Name="AdvisorUserName" ColumnName="AdvisorUserName" />
+                <ScalarProperty Name="AdvisorLocation" ColumnName="AdvisorLocation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AppointmentTables">
+            <EntityTypeMapping TypeName="ProjectDBModel.AppointmentTable">
+              <MappingFragment StoreEntitySet="AppointmentTable">
+                <ScalarProperty Name="AppointmentID" ColumnName="AppointmentID" />
+                <ScalarProperty Name="AppointmentTime" ColumnName="AppointmentTime" />
+                <ScalarProperty Name="AppointmentDate" ColumnName="AppointmentDate" />
+                <ScalarProperty Name="AppointmentReason" ColumnName="AppointmentReason" />
+                <ScalarProperty Name="AdvisorID" ColumnName="AdvisorID" />
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MSGTables">
+            <EntityTypeMapping TypeName="ProjectDBModel.MSGTable">
+              <MappingFragment StoreEntitySet="MSGTable">
+                <ScalarProperty Name="MSGID" ColumnName="MSGID" />
+                <ScalarProperty Name="FromEmail" ColumnName="FromEmail" />
+                <ScalarProperty Name="TOEmail" ColumnName="TOEmail" />
+                <ScalarProperty Name="MSGtext" ColumnName="MSGtext" />
+                <ScalarProperty Name="MSGDate" ColumnName="MSGDate" />
+                <ScalarProperty Name="MSGTime" ColumnName="MSGTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentTables">
+            <EntityTypeMapping TypeName="ProjectDBModel.StudentTable">
+              <MappingFragment StoreEntitySet="StudentTable">
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+                <ScalarProperty Name="StudentLastName" ColumnName="StudentLastName" />
+                <ScalarProperty Name="StudentFirstName" ColumnName="StudentFirstName" />
+                <ScalarProperty Name="StudentUserName" ColumnName="StudentUserName" />
+                <ScalarProperty Name="StudentAdvisorID" ColumnName="StudentAdvisorID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserTables">
+            <EntityTypeMapping TypeName="ProjectDBModel.UserTable">
+              <MappingFragment StoreEntitySet="UserTable">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+                <ScalarProperty Name="UserRole" ColumnName="UserRole" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

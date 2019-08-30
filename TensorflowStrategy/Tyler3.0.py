@@ -41,7 +41,6 @@ currencies = ["AUDCAD", "EURCHF", "EURGBP", "NZDCAD", "USDCAD", "USDCHF", "NZDUS
 currenciesIndex = {}
 for i in range(len(currencies)):    # Creates a dictionary from the currency list
     currenciesIndex[currencies[i]] = i
-
 # Initiate global variables
 probabilities = [0] * len(currencies)
 leverage = 20
