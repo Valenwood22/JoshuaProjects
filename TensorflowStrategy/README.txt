@@ -13,4 +13,5 @@ OandaV20: All classes in this folder make up the API for the Oanda trading platf
 venv: support for Tensorflow
 Database: the current candles and indicators for each currency the program is monitoring
 SupportJack: The logic for retrieving candle sticks and calculating indicators then loading them into the database
-Tyler2.X: The logic for making a decision on weather or not it is an appropriate point to open a position
+Tyler3.X: The logic for making a decision on weather or not it is an appropriate point to open a position
+

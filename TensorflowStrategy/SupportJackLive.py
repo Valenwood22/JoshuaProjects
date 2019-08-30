@@ -1,37 +1,52 @@
-__author__ = "Timothy Alexander, Joshua Gisi"
-__copyright__ = "Copyright 2018, Project Money Tree"
+
+__author__ = "Joshua Gisi Timothy Alexander"
+__copyright__ = "2018, Project Money Tree"
 __version__ = "SupportJack1.2Alpha"
 __email__ = "TJEnterprises2019@gmail.com"
-__status__ = "pre-Alpha"
-__DataBaseFilePath__ = "/root/Tyler+Jack/Database/currenciesDB"  # "Database/currenciesDB"
+__status__ = "Demo"
+__DataBaseFilePath__ = "/root/Tyler+Jack/Database/currenciesDB"
+
+
 
 # <editor-fold desc="Imports">
-import time
 import datetime
-from datetime import timedelta
-from datetime import datetime
-import pytz
 import sqlite3
-
-import oandapyV20.endpoints.pricing as pricing
+import time
+from datetime import datetime
+from datetime import timedelta
 import oandapyV20.endpoints.instruments as instruments
+import oandapyV20.endpoints.pricing as pricing
+import pytz
 from oandapyV20 import API
 # </editor-fold>
 
 
+
 #<editor-fold desc="Credentials">
+# Oanda API Credentials setup (should be encrypted)
 accountID = "xxx-xxx-xxxxxxx-xxx"
 api = API(access_token="xxxxxxxxxxxxxxxxxxxxxxxx", environment="live", headers=None)
 #</editor-fold>
 
+
+
+# Initiate global variables
 currencies = ["AUDCAD", "EURCHF", "EURGBP", "NZDCAD", "USDCAD", "USDCHF", "NZDUSD", "EURUSD", "GBPUSD", "AUDUSD" ]
 
 
+
+
+
+
+
 def exeSqlSelect(command):
-    # Create a database if not exists and get a connection to it
-    connection = sqlite3.connect(__DataBaseFilePath__)
-    # Get a cursor to execute sql statements
-    cursor = connection.cursor()
+    """
+    Used to select data from the database such as candlesticks
+    :param command: A string containing a SQL 'Select' command
+    :return: The resulting rows as a matrix
+    """
+    connection = sqlite3.connect(__DataBaseFilePath__)  # Create a database if not exists and get a connection to it
+    cursor = connection.cursor()    # Get a cursor to execute sql statements
     cursor.execute(command)
     rows = cursor.fetchall()
     connection.close()
@@ -39,29 +54,51 @@ def exeSqlSelect(command):
 
 
 def exeSqlInsert(command):
+    """
+    Used to insert new rows into the database such as order information
+    :param command: A string containing a SQL 'Insert' command
+    :return:
+    """
     write(command)
-    # Create a database if not exists and get a connection to it
-
-    connection = sqlite3.connect(__DataBaseFilePath__)
-    # Get a cursor to execute sql statements
-    cursor = connection.cursor()
+    connection = sqlite3.connect(__DataBaseFilePath__)  # Create a database if not exists and get a connection to it
+    cursor = connection.cursor()    # Get a cursor to execute sql statements
     cursor.execute(command)
     connection.commit()
     connection.close()
 
 
+
+
+
+
+
 def write(text):
+    """
+    A method used to log the bots activity for debugging
+    :param text: The message to be written to the log
+    :return:
+    """
     text_file = open(__version__+"Output.txt", "a")
     text_file.write(str(text) + "\n\n\n")
     text_file.close()
 
 
+
+
+
+
+
 def getCandleStick(currency):
-    pair = currency[:3] + "_" + currency[3:]
+    """
+    Gets the most recent candle for the Oanda API then converts the time to central
+    :param currency: The currency to get the candle from
+    :return:
+    """
+    pair = currency[:3] + "_" + currency[3:]    # Format the currency pair by removing the '_'
     client = api
     paramsV = {"count": 2, "granularity": "M15"}
     v = instruments.InstrumentsCandles(instrument=pair, params=paramsV)
-    client.request(v)
+    client.request(v)   # Requests most recent M15 Candle
 
     candle = v.response['candles']
     candle = (sorted(candle, key=lambda i: i['time']))
@@ -87,7 +124,18 @@ def getCandleStick(currency):
     return candle[index], '"' + str(candleTime) + '"'
 
 
+
+
+
+
+
 def zuluToCenteral(time, timezone):
+    """
+    Converts the time Digital ocean time zone to central time
+    :param time: time to be converted
+    :param timezone: The time timzone of the to be converted time
+    :return:
+    """
     time = datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
     zuluTime = pytz.timezone(timezone)
     centeralTime = pytz.timezone("America/Chicago")
@@ -96,14 +144,32 @@ def zuluToCenteral(time, timezone):
     return zuluTime.localize(time).astimezone(centeralTime)
 
 
+
+
+
+
+
 def flowGate():
-    if (datetime.now().minute % 15 == 0 and datetime.now().second >= 5):
+    """
+    Get opens every 15 minutes and 5 seconds
+    :return:
+    """
+    if datetime.now().minute % 15 == 0 and datetime.now().second >= 5:
         return True
     else:
         return False
 
 
+
+
+
+
+
 def marketOpen():
+    """
+    Gets whether the market is currently open used to pause the program during the weekend
+    :return: A boolean representing whether the market is open or not.
+    """
     params = {"instruments": "EUR_USD"}
     r = pricing.PricingInfo(accountID=accountID, params=params)
     try:
@@ -121,11 +187,19 @@ def marketOpen():
     return r
 
 
+
+
+
+
+
 def getRSImod(currency):
+    """
+    Calculates a modified RSI (Relative Strength Index) of the current candle
+    :param currency: The pair to calculate the RSI of
+    :return: The current RSI values as a float
+    """
     temp = exeSqlSelect("SELECT close FROM " + str(currency) + "_Candles ORDER BY PID desc limit 100")
-
     prices = []
-
     for i in range(len(temp)):
         prices.append(temp[-1 - i][0])
 
@@ -135,7 +209,6 @@ def getRSImod(currency):
     currLoss = 0
     avgGain = 0
     avgLoss = 0
-
     for i in range(len(prices)):
 
         if (i < 14):
@@ -171,7 +244,17 @@ def getRSImod(currency):
     return RSI[len(RSI) - 1]
 
 
+
+
+
+
+
 def getD(currency):
+    """
+    Calcualtes the D indicator
+    :param currency: The pair to calculate the D of
+    :return: The current D value as a float
+    """
     temp = exeSqlSelect("SELECT high, low, close FROM " + str(currency) + "_Candles ORDER BY PID desc limit 100")
 
     highs = []
@@ -217,7 +300,17 @@ def getD(currency):
     return D[len(D) - 1]
 
 
+
+
+
+
+
 def getADXmod(currency):
+    """
+    Calculates a modified ADX for the given given candle
+    :param currency: The pair to calculate the ADX of
+    :return: The current ADX value
+    """
     temp = exeSqlSelect("SELECT high, low, close FROM " + str(currency) + "_Candles ORDER BY PID desc limit 100")
 
     highs = []
@@ -349,7 +442,17 @@ def getADXmod(currency):
     return ADX[len(ADX) - 1]
 
 
+
+
+
+
+
 def getMACD(currency):
+    """
+    Calculates a MCAD for the given given candle
+    :param currency: The pair to calculate the MCAD of
+    :return: The current MCAD value
+    """
     temp = exeSqlSelect("SELECT close FROM " + str(currency) + "_Candles ORDER BY PID desc limit 100")
 
     prices = []
@@ -416,7 +519,17 @@ def getMACD(currency):
     return MACD_mag[len(MACD_mag) - 1], MACD_dir[len(MACD_dir) - 1]
 
 
+
+
+
+
+
 def getOBV(currency):
+    """
+    Calculates the OBV (On Balance Volume) for the given given candle
+    :param currency: The pair to calculate the OBV of
+    :return: The current OBV value
+    """
     temp = exeSqlSelect("SELECT close, volume FROM " + str(currency) + "_Candles ORDER BY PID desc limit 100")
 
     prices = []
@@ -462,13 +575,18 @@ def getOBV(currency):
     return OBV_pred[len(OBV_pred) - 1]
 
 
+
+
+
+
+
 if __name__ == '__main__':
     write("\n\nRunning: " + __version__)
     print("\n\nRunning*** " + __version__)
-    while (True):
+    while True:
         try:
-            if (marketOpen()):
-                if (flowGate()):
+            if marketOpen():
+                if flowGate():  # Insert a new candle into the database every 15 minutes and calculate indicators
 
                     for i in range(len(currencies)):
                         candle, candleTime = getCandleStick(currencies[i])
