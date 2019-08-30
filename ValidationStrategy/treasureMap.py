@@ -8,7 +8,7 @@ __status__ = "Demo"
 
 
 from tkinter import *
-from Companion import Companion as companion
+import companion as companion
 import numpy as np
 
 
@@ -17,8 +17,8 @@ class Map:
         """
         Constructor to initiate defaults
         :param root: TKinter root
-        :param data: candle data
-        :param positions: buy/sell positions
+        :param data: candle data to graph
+        :param positions: buy/sell positions to graph
         """
         npData = np.array(data)
         high = float(max(npData[...,companion.columnKey['HIGH']]))
@@ -260,18 +260,24 @@ if __name__ == '__main__':
 '''
 from tkinter import *
 import treasureMap
-from sqlForest import sqlCompanion as companion
+import Companion as companion
 
+# Create a TKinter root
 root=Tk()
 
+# connect to database with companion and query candle sticks
 Data = companion("C:\\Users\\Administrator\\Desktop\\BackTestData.db")
 dataSet = Data.getDataByDatetime("EUR_USD", printReturn=False, startDatetime='2009-01-05 19:00:00',
                                  endDatetime='2009-01-06 02:00:00')
 
+# graph is created on initiation. pass in the TKinter root, queried dataset, and a lsit of dictionaries as order information  
 treasureMap.Map(root, dataSet, [{'openPos':'2009-01-05 19:32:00', 'closePos':'2009-01-05 20:06:00','pos':'long'},
                     {'openPos':'2009-01-05 20:07:00', 'closePos':'2009-01-05 20:27:00','pos':'long'}])
 
+# Run the map 
 root.mainloop()
+
+# Close the database connection
 Data.closeConnection()
 '''
 
